@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
 import { productService } from "../services/productService";
 import { Product } from "../models/Product";
+import { useParams } from "react-router-dom";
 
 function ProductDetail() {
-  const [product, setProduct] = useState<Product[]>([]);
+  const { id } = useParams();
+  const [product, setProduct] = useState<Product>();
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [id]);
 
   const loadData = () => {
-    productService.getData().then((res) => {
-      console.log(res);
+    productService.getMoreDetail(Number(id)).then((res) => {
+      console.log("Product detail", res);
       setProduct(res);
     });
   };
@@ -19,13 +21,13 @@ function ProductDetail() {
   return (
     <>
       <ul>
-        {product &&
-          product.map((item) => (
-            <li key={item.id} style={{ cursor: "pointer" }}>
-              {item.id} - {item.name} - {item.unitPrice} - {item.unitsInStock} -{" "}
-              {item.quantityPerUnit} - {item.categoryId}
-            </li>
-          ))}
+        {product && (
+          <li key={product.id} style={{ cursor: "pointer" }}>
+            {product.id} - {product.name} - {product.unitPrice} -{" "}
+            {product.unitsInStock} - {product.quantityPerUnit} -{" "}
+            {product.categoryId}
+          </li>
+        )}
       </ul>
     </>
   );

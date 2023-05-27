@@ -20,9 +20,9 @@ function Products() {
 
   const getDetail = (id: number) => {
     productService.getMoreDetail(id).then((res) => {
-      console.log(res);
+      console.log("Products", res);
     });
-    navigate("/productDetail");
+    navigate(`/products/${id}`);
   };
 
   return (
